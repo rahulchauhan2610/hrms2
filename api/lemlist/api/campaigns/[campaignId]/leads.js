@@ -49,7 +49,15 @@ export default async function handler(req, res) {
     }
     
     // Ensure the Authorization header has the correct format
-    const authHeader = apiKey.startsWith('Basic ') ? apiKey : `Basic ${apiKey}`;
+    // Check if the API key is already properly formatted as Basic auth
+    let authHeader;
+    if (apiKey.startsWith('Basic ')) {
+      authHeader = apiKey; // Already formatted correctly
+    } else {
+      // The API key might be the raw token, so we need to format it
+      // For Lemlist, this should be properly base64 encoded
+      authHeader = `Basic ${apiKey}`;
+    }
     
     const headers = {
       'Content-Type': 'application/json',
