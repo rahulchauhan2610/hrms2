@@ -12,6 +12,14 @@ export default async function handler(req, res) {
   try {
     // Get the campaign ID from the query parameters
     const { campaignId } = req.query;
+    
+    // Log incoming request for debugging
+    console.log('Lemlist API Proxy - Incoming request:', {
+      method: req.method,
+      campaignId,
+      headers: req.headers,
+      body: req.body
+    });
 
     // Construct the target URL for the Lemlist API
     const targetUrl = `https://api.lemlist.com/api/campaigns/${campaignId}/leads/`;
@@ -19,8 +27,12 @@ export default async function handler(req, res) {
     // Prepare headers, preserving the Authorization header
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': req.headers.authorization || '',
     };
+    
+    // Only add authorization if it exists
+    if (req.headers.authorization) {
+      headers['Authorization'] = req.headers.authorization;
+    }
 
     // Make the request to the Lemlist API
     const response = await fetch(targetUrl, {
@@ -28,7 +40,10 @@ export default async function handler(req, res) {
       headers,
       body: req.body ? JSON.stringify(req.body) : undefined,
     });
-
+    
+    // Log the response for debugging
+    console.log('Lemlist API Proxy - Response status:', response.status);
+    
     // Get the response from the Lemlist API
     let data;
     try {
@@ -38,10 +53,14 @@ export default async function handler(req, res) {
     } catch (parseError) {
       // If response is not JSON, return as text
       const text = await response.text();
+      console.log('Lemlist API Proxy - Response text:', text);
       res.status(response.status).send(text);
     }
   } catch (error) {
     console.error('Error proxying to Lemlist API:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ 
+      error: 'Internal server error',
+      message: error.message
+    });
   }
 }
