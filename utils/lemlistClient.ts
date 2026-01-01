@@ -1,8 +1,8 @@
 import { Lead } from '../types';
 
-// Hardcoded for demo purposes as requested
-const LEMLIST_CAMPAIGN_ID = 'cam_tkiZsKa4PLBYAC3ud';
-const LEMLIST_API_KEY = 'Basic OmIxNGUzOTFkY2ZjZjIxY2U2YmM5OTVhYjk1NzBkNTAw'; // Properly formatted Basic auth token from curl command
+// Use environment variables for Lemlist configuration
+const LEMLIST_CAMPAIGN_ID = process.env.REACT_APP_LEMLIST_CAMPAIGN_ID || 'cam_tkiZsKa4PLBYAC3ud';
+const LEMLIST_API_KEY = process.env.REACT_APP_LEMLIST_API_KEY || 'Basic OmIxNGUzOTFkY2ZjZjIxY2U2YmM5OTVhYTk1NzBkNTAw'; // Fallback for dev
 
 export interface LemlistSyncResult {
   success: boolean;

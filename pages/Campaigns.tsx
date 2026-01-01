@@ -36,14 +36,24 @@ export const Campaigns: React.FC = () => {
     
     setCreating(true);
     try {
-      await db.createCampaign(newCampName, newCampJob, newCampLoc);
-      await fetchCampaigns();
-      setShowCreateModal(false);
-      
-      // Reset form
-      setNewCampName('');
-      setNewCampJob('');
-      setNewCampLoc('');
+      const newCampaign = await db.createCampaign(newCampName, newCampJob, newCampLoc);
+      if (newCampaign) {
+        await fetchCampaigns();
+        setShowCreateModal(false);
+        
+        // Reset form
+        setNewCampName('');
+        setNewCampJob('');
+        setNewCampLoc('');
+        
+        // Navigate to scraper with the new campaign
+        const params = new URLSearchParams({
+          campaignId: newCampaign.id,
+          keyword: newCampJob,
+          location: newCampLoc
+        });
+        navigate(`/scraper?${params.toString()}`);
+      }
     } catch (error) {
       console.error("Failed to create campaign:", error);
     } finally {

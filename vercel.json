@@ -1,8 +1,16 @@
 {
   "rewrites": [
     {
-      "source": "/api/lemlist/:path*",
-      "destination": "https://api.lemlist.com/:path*"
+      "source": "/api/lemlist/api/campaigns/:campaignId/leads/:path*",
+      "destination": "/api/lemlist/api/campaigns/:campaignId/leads"
+    },
+    {
+      "source": "/api/lemlist/api/campaigns/:campaignId/leads",
+      "destination": "/api/lemlist/api/campaigns/:campaignId/leads"
+    },
+    {
+      "source": "/api/lemlist/api/inbox/linkedin",
+      "destination": "/api/lemlist/api/inbox/linkedin"
     },
     {
       "source": "/api/webhooks/lemlist",

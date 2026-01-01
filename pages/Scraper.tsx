@@ -53,7 +53,7 @@ export const Scraper: React.FC = () => {
             setLoadingCampaigns(false);
         });
     }
-  }, [campaignId, searchParams]);
+  }, [campaignId]);
 
   // If manually typing in input, override the defaults
   useEffect(() => {
