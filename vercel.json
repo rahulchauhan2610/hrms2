@@ -1,0 +1,31 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/lemlist/:path*",
+      "destination": "https://api.lemlist.com/:path*"
+    },
+    {
+      "source": "/api/webhooks/lemlist",
+      "destination": "/api/webhooks/lemlist"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
+        }
+      ]
+    }
+  ]
+}
