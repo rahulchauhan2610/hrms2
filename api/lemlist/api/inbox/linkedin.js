@@ -65,11 +65,13 @@ export default async function handler(req, res) {
     // Get the response from the Lemlist API
     let data;
     try {
-      data = await response.json();
+      // Clone the response to allow multiple reads
+      const responseClone = response.clone();
+      data = await responseClone.json();
       // Return the response from Lemlist API to the client
       res.status(response.status).json(data);
     } catch (parseError) {
-      // If response is not JSON, return as text
+      // If response is not JSON, return as text from the original response
       const text = await response.text();
       console.log('Lemlist LinkedIn API Proxy - Response text:', text);
       res.status(response.status).send(text);
