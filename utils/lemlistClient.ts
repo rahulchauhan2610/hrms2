@@ -2,6 +2,7 @@ import { Lead } from '../types';
 
 // Use environment variables for Lemlist configuration
 const LEMLIST_CAMPAIGN_ID = process.env.REACT_APP_LEMLIST_CAMPAIGN_ID || 'cam_tkiZsKa4PLBYAC3ud';
+// This is only used as fallback for dev, actual API key is handled server-side
 const LEMLIST_API_KEY = process.env.REACT_APP_LEMLIST_API_KEY || 'Basic OmIxNGUzOTFkY2ZjZjIxY2U2YmM5OTVhYTk1NzBkNTAw'; // Fallback for dev
 
 export interface LemlistSyncResult {
@@ -37,7 +38,6 @@ export const syncLeadToLemlist = async (lead: Lead): Promise<LemlistSyncResult> 
     const response = await fetch(targetUrl, {
         method: 'POST',
         headers: {
-            'Authorization': LEMLIST_API_KEY,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
@@ -111,7 +111,6 @@ export const sendLinkedInMessage = async (leadId: string | undefined, contactId:
     const response = await fetch(targetUrl, {
         method: 'POST',
         headers: {
-            'Authorization': LEMLIST_API_KEY,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)

@@ -24,15 +24,22 @@ export default async function handler(req, res) {
     // Construct the target URL for the Lemlist API
     const targetUrl = `https://api.lemlist.com/api/campaigns/${campaignId}/leads/`;
 
-    // Prepare headers, preserving the Authorization header
+    // Prepare headers
+    // Use the environment variable for Lemlist API key instead of the client-provided one
+    const apiKey = process.env.LEMLIST_API_KEY || req.headers.authorization;
+    
+    if (!apiKey) {
+      console.error('Lemlist API key is missing!');
+      return res.status(500).json({ 
+        error: 'Server configuration error',
+        message: 'Lemlist API key is not configured'
+      });
+    }
+    
     const headers = {
       'Content-Type': 'application/json',
+      'Authorization': apiKey,
     };
-    
-    // Only add authorization if it exists
-    if (req.headers.authorization) {
-      headers['Authorization'] = req.headers.authorization;
-    }
 
     // Make the request to the Lemlist API
     const response = await fetch(targetUrl, {
