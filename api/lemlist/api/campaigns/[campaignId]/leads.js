@@ -36,9 +36,12 @@ export default async function handler(req, res) {
       });
     }
     
+    // Ensure the Authorization header has the correct format
+    const authHeader = apiKey.startsWith('Basic ') ? apiKey : `Basic ${apiKey}`;
+    
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': apiKey,
+      'Authorization': authHeader,
     };
 
     // Make the request to the Lemlist API
