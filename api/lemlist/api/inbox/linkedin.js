@@ -9,12 +9,24 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
+  // Parse the request body if it exists
+  let body;
+  if (req.body) {
+    if (typeof req.body === 'string') {
+      body = JSON.parse(req.body);
+    } else {
+      body = req.body;
+    }
+  } else {
+    body = {};
+  }
+
   try {
     // Log incoming request for debugging
     console.log('Lemlist LinkedIn API Proxy - Incoming request:', {
       method: req.method,
       headers: req.headers,
-      body: req.body
+      body: body
     });
 
     // Construct the target URL for the Lemlist API
@@ -44,7 +56,7 @@ export default async function handler(req, res) {
     const response = await fetch(targetUrl, {
       method: req.method,
       headers,
-      body: req.body ? JSON.stringify(req.body) : undefined,
+      body: body ? JSON.stringify(body) : undefined,
     });
     
     // Log the response for debugging
